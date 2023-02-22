@@ -6,55 +6,44 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class PlaybackAdapter extends BaseAdapter {
+public class PlaybackAdapter extends ArrayAdapter<Playback> {
 
-    Context context;
-    ArrayList<Playback> playbackList;
+    private Context ctx;
+    private int rsc;
 
-    int playButton;
-    LayoutInflater inflater;
-
-    PlaybackAdapter(Context ctx, ArrayList<Playback> pbl, int pbn) {
-        this.context = ctx;
-        this.playbackList = pbl;
-        this.playButton = pbn;
-        this.inflater = LayoutInflater.from(ctx);
+    public PlaybackAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Playback> objects) {
+        super(context, resource, objects);
+        this.ctx = context;
+        this.rsc = resource;
     }
 
-
+    @NonNull
     @Override
-    public int getCount() {
-        return playbackList.size();
-    }
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        LayoutInflater li = LayoutInflater.from(ctx);
 
-    @Override
-    public Object getItem(int i) {
-        return null;
-    }
+        convertView = li.inflate(rsc, parent, false);
 
-    @Override
-    public long getItemId(int i) {
-        return 0;
-    }
+        ImageView iv = convertView.findViewById(R.id.image);
 
+        TextView tv = convertView.findViewById(R.id.text_view);
 
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.activity_main, null);
-        TextView tv = (TextView) view.findViewById(R.id.textView);
-        ImageView iv = (ImageView) view.findViewById(R.id.playImage);
-        Log.d("NAME", playbackList.get(i).name);
-        tv.setText(playbackList.get(i).name);
-        iv.setImageResource(playButton);
-        return view;
+        iv.setImageResource(R.drawable.play_button_image);
+        tv.setText(getItem(position).name);
+
+        return convertView;
     }
 }

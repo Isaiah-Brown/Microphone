@@ -81,7 +81,7 @@ public class Main extends AppCompatActivity {
                 playbackList.add(pb);
             }
             lv = (ListView) findViewById(R.id.playbacks);
-            PlaybackAdapter playbackAdapter = new PlaybackAdapter(getApplicationContext(), playbackList, playButton);
+            PlaybackAdapter playbackAdapter = new PlaybackAdapter(this, R.layout.list_row, playbackList);
             lv.setAdapter(playbackAdapter);
         }
 
