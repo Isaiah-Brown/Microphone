@@ -22,9 +22,6 @@ import java.io.File;
                 i -= 1;
             }
 
-
-
-
             s.deleteCharAt(s.length() - 1);
             this.name = s.reverse().toString();
             Log.d("NAME", name);
