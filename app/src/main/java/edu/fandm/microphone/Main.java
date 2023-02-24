@@ -13,6 +13,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -37,7 +40,7 @@ public class Main extends AppCompatActivity {
 
     ArrayList<Playback> playbackList = new ArrayList<>();
 
-    int playButton = R.drawable.play_button_image;
+    int playButton = R.drawable.baseline_play_arrow_24;
 
     ListView lv;
 
@@ -46,7 +49,7 @@ public class Main extends AppCompatActivity {
     String currentPlayBackFile;
 
 
-
+    boolean COLD = true;
 
 
     @Override
@@ -68,6 +71,10 @@ public class Main extends AppCompatActivity {
 
         lv = findViewById(R.id.playbacks);
         lv.setOnItemClickListener((adapterView, view, i, l) -> {
+            View v = findViewById(R.id.playbacks);
+            Animation a = AnimationUtils.loadAnimation(this, R.anim.make_red);
+            v.setAnimation(a);
+            v.animate();
             currentPlayBackFile = playbackList.get(i).filePath;
             PlayThread thread = new PlayThread(currentPlayBackFile);
             thread.start();
@@ -125,10 +132,11 @@ public class Main extends AppCompatActivity {
 
 
     public void handleRecordButton(Button b) {
-        Date time = Calendar.getInstance().getTime();
-        Log.d("Time", time.toString());
 
-        if (b.getText().toString().equals("Record")) {
+
+        if (COLD) {
+            COLD = false;
+            b.setBackground(getDrawable(R.drawable.circle_red));
             try {
                 mr = new MediaRecorder();
                 mr.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -145,6 +153,8 @@ public class Main extends AppCompatActivity {
                 e.printStackTrace();
             }
         } else {
+            COLD = true;
+            b.setBackground(getDrawable(R.drawable.circle));
             mr.stop();
             mr.release();
             mr = null;
@@ -153,6 +163,7 @@ public class Main extends AppCompatActivity {
             playbackList.add(pb);
             updateListView();
             Log.d("Play", currentFilePath.toString());
+
         }
 
     }
