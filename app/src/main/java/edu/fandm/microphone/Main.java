@@ -132,8 +132,6 @@ public class Main extends AppCompatActivity {
 
 
     public void handleRecordButton(Button b) {
-
-
         if (COLD) {
             COLD = false;
             b.setBackground(getDrawable(R.drawable.circle_red));
@@ -147,7 +145,6 @@ public class Main extends AppCompatActivity {
                 mr.prepare();
                 mr.start();
                 Toast.makeText(this, "Recording started", Toast.LENGTH_LONG).show();
-                b.setText("Stop");
                 Log.d("Main", makeRecordingFilePath());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -158,7 +155,6 @@ public class Main extends AppCompatActivity {
             mr.stop();
             mr.release();
             mr = null;
-            b.setText("Record");
             Playback pb = new Playback(currentFilePath);
             playbackList.add(pb);
             updateListView();
