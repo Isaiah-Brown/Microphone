@@ -7,9 +7,10 @@
     
     <ImageView
         android:id="@+id/image"
-        android:src="@color/purple_500"
+        android:src="@drawable/baseline_play_arrow_24"
         android:layout_width="100dp"
         android:layout_height="100dp"
+
         />
     <TextView
         android:layout_toRightOf="@id/image"
@@ -19,6 +20,7 @@
         android:layout_marginTop="40dp"
         android:text="text"
         android:layout_marginLeft="20dp"
+        android:backgroundTint="@color/red"
     />
 
 </LinearLayout>
