@@ -152,14 +152,17 @@ public class Main extends AppCompatActivity {
         } else {
             COLD = true;
             b.setBackground(getDrawable(R.drawable.circle));
-            mr.stop();
-            mr.release();
-            mr = null;
-            Playback pb = new Playback(currentFilePath);
-            playbackList.add(pb);
-            updateListView();
-            Log.d("Play", currentFilePath.toString());
-
+            try {
+                mr.stop();
+                mr.release();
+                mr = null;
+                Playback pb = new Playback(currentFilePath);
+                playbackList.add(pb);
+                updateListView();
+                Log.d("Play", currentFilePath.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }
