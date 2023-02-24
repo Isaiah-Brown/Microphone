@@ -5,34 +5,20 @@ import android.util.Log;
 import android.widget.Button;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-    public class Playback {
-
-        MediaPlayer mp = new MediaPlayer();
+public class Playback {
         String name;
         String filePath;
 
         Playback(String filePath) {
-            StringBuilder s = new StringBuilder();
-            int i = filePath.length() - 1;
-            char c = filePath.charAt(i);
-            while(c != '/') {
-                c = filePath.charAt(i);
-                s.append(c);
-                i -= 1;
-            }
-
-            s.deleteCharAt(s.length() - 1);
-            this.name = s.reverse().toString();
-            Log.d("NAME", name);
-
+            File f = new File(filePath);
+            String n = f.getName();
+            n = n.substring(0, n.length() - 4);
+            this.name = n;
             this.filePath = filePath;
 
-            try {
-                this.mp.setDataSource(filePath);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
 
     }

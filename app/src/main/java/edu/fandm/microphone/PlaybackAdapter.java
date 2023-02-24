@@ -34,16 +34,11 @@ public class PlaybackAdapter extends ArrayAdapter<Playback> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater li = LayoutInflater.from(ctx);
-
         convertView = li.inflate(rsc, parent, false);
-
         ImageView iv = convertView.findViewById(R.id.image);
-
         TextView tv = convertView.findViewById(R.id.text_view);
-
         iv.setImageResource(R.drawable.play_button_image);
         tv.setText(getItem(position).name);
-
         return convertView;
     }
 }
