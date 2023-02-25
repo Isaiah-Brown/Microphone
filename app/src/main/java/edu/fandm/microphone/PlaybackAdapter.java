@@ -27,6 +27,11 @@ public class PlaybackAdapter extends ArrayAdapter<Playback> {
         this.rsc = resource;
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
 
     @NonNull
     @Override

@@ -1,28 +1,37 @@
 package edu.fandm.microphone;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Layout;
+import android.transition.Transition;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.net.URI;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -39,8 +48,6 @@ public class Main extends AppCompatActivity {
     String currentFileName;
 
     ArrayList<Playback> playbackList = new ArrayList<>();
-
-    int playButton = R.drawable.baseline_play_arrow_24;
 
     ListView lv;
 
@@ -71,17 +78,24 @@ public class Main extends AppCompatActivity {
 
         lv = findViewById(R.id.playbacks);
         lv.setOnItemClickListener((adapterView, view, i, l) -> {
-            View v = findViewById(R.id.playbacks);
+
+            //Object playback =  adapterView.getItemAtPosition(i);
+            //TransitionDrawable transition = (TransitionDrawable) adapterView.getBackground();
+            //transition.startTransition(2000);
             Animation a = AnimationUtils.loadAnimation(this, R.anim.make_red);
-            v.setAnimation(a);
-            v.animate();
+            view.setAnimation(a);
+            view.animate();
             currentPlayBackFile = playbackList.get(i).filePath;
             PlayThread thread = new PlayThread(currentPlayBackFile);
             thread.start();
+            view.setBackgroundColor(getResources().getColor(R.color.green));
+            updateListView();
         });
 
 
+
         lv.setOnItemLongClickListener((adapterView, view, i, l) -> {
+            view.setBackgroundColor(getResources().getColor(R.color.red));
             currentPlayBackFile = playbackList.get(i).filePath;
             playbackList.remove(i);
             deleteRecording(currentPlayBackFile);
@@ -110,8 +124,9 @@ public class Main extends AppCompatActivity {
             lv = (ListView) findViewById(R.id.playbacks);
             PlaybackAdapter pa = new PlaybackAdapter(this, R.layout.list_row, playbackList);
             lv.setAdapter(pa);
-
         }
+
+
     }
 
     public void updateListView() {
@@ -121,6 +136,7 @@ public class Main extends AppCompatActivity {
     }
 
     public void deleteRecording(String filePath) {
+
         File file = new File(currentPlayBackFile);
         if(file.exists()) {
             file.delete();
