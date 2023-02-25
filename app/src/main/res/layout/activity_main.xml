@@ -8,7 +8,6 @@
     tools:context=".Main">
 
 
-
     <ListView
         android:id="@+id/playbacks"
         android:layout_width="match_parent"

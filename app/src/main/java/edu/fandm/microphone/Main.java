@@ -1,5 +1,6 @@
 package edu.fandm.microphone;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -7,6 +8,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
@@ -48,6 +50,8 @@ public class Main extends AppCompatActivity {
     String currentFileName;
 
     ArrayList<Playback> playbackList = new ArrayList<>();
+    AlertDialog.Builder builder;
+
 
     ListView lv;
 
@@ -79,9 +83,6 @@ public class Main extends AppCompatActivity {
         lv = findViewById(R.id.playbacks);
         lv.setOnItemClickListener((adapterView, view, i, l) -> {
 
-            //Object playback =  adapterView.getItemAtPosition(i);
-            //TransitionDrawable transition = (TransitionDrawable) adapterView.getBackground();
-            //transition.startTransition(2000);
             Animation a = AnimationUtils.loadAnimation(this, R.anim.make_red);
             view.setAnimation(a);
             view.animate();
@@ -94,11 +95,28 @@ public class Main extends AppCompatActivity {
 
 
 
-        lv.setOnItemLongClickListener((adapterView, view, i, l) -> {
+        lv.setOnItemLongClickListener((adapterView, view, idx, l) -> {
             view.setBackgroundColor(getResources().getColor(R.color.red));
-            currentPlayBackFile = playbackList.get(i).filePath;
-            playbackList.remove(i);
-            deleteRecording(currentPlayBackFile);
+            builder = new AlertDialog.Builder(this);
+            builder.setTitle("Delete")
+                .setMessage("Deleting...\n" + playbackList.get(idx).name).setIcon(R.drawable.baseline_warning_24)
+                .setCancelable(true)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    currentPlayBackFile = playbackList.get(idx).filePath;
+                    playbackList.remove(idx);
+                    deleteRecording(currentPlayBackFile);
+                    dialogInterface.cancel();
+                }
+            })
+            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    view.setBackgroundColor(getResources().getColor(R.color.white));
+                    dialogInterface.cancel();
+                }
+            }).show();
             return true;
         });
 
